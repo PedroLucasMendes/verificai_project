@@ -95,7 +95,56 @@ class Pageproductview extends StatelessWidget {
       ),
 
       
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: Row(
+        children: [
+              FloatingActionButton(
+                onPressed: (){
+                  String rmv_product = textProduct;
+                  db.loadData();
+                  for(int i = 0; i < db.productList.length;i++){
+                    if(db.productList[i][1] == rmv_product){
+                      db.productList.removeAt(i);
+                      break;
+                    }
+                  }
+                  db.updateDataBase();
+                  onSaved();
+                  Navigator.of(context).pop();
+                },
+                child: Icon(Icons.delete),
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.red[900],
+          ),
+              FloatingActionButton(
+            onPressed: (){
+              String rmv_product = textProduct;
+              db.loadData();
+              for(int i = 0; i < db.productList.length;i++){
+                if(db.productList[i][1] == rmv_product){
+                  db.productList.removeAt(i);
+                  break;
+                }
+              }
+              db.updateDataBase();
+              onSaved();
+              Navigator.of(context).pop();
+            },
+            child: Icon(Icons.change_circle),
+            backgroundColor: Colors.yellow,
+            foregroundColor: Colors.yellow[900],
+          ),
+        ],
+      ),
+
+
+
+
+    );
+  }
+}
+
+
+/**FloatingActionButton(
         onPressed: (){
           String rmv_product = textProduct;
           db.loadData();
@@ -112,11 +161,4 @@ class Pageproductview extends StatelessWidget {
         child: Icon(Icons.delete),
         backgroundColor: Colors.red,
         foregroundColor: Colors.red[900],
-      ),
-
-
-
-
-    );
-  }
-}
+      ), */
