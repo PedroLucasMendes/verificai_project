@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:project_verificai/model/barcode.dart';
 import 'package:project_verificai/model/database.dart';
+import 'package:project_verificai/model/cameraModel.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 List<String> listStore = <String>['Baratão', "Açai"];
 
@@ -32,6 +36,33 @@ class _PageaddproductviewState extends State<Pageaddproductview> {
         dropdownValue = selectecValue;
       });
     }
+  }
+
+  File? _imageFile;
+
+  late ModelCamera _modelCamera;
+
+  late BarCodeModel _modelBarCode;
+
+  late String ticket = "Sem valor";
+
+  @override
+  void initState(){
+    super.initState();
+
+    _modelCamera = ModelCamera(onImagePicked: (File file){
+      setState(() {
+        _imageFile = file;
+      });
+    });
+
+    _modelBarCode = BarCodeModel(onBarCode: (String code){
+      setState(() {
+        ticket = code;
+      });
+    });
+
+
   }
 
   TextEditingController _dateController = TextEditingController();
@@ -88,7 +119,7 @@ class _PageaddproductviewState extends State<Pageaddproductview> {
                       icon: Image.asset('lib/imgs/leitura-de-codigo-de-barras.png'),
                       
                       iconSize: 10,
-                      onPressed: () {},
+                      onPressed: _modelBarCode.readBarCode,
                     ),
                   ),
                 ],
@@ -217,8 +248,9 @@ class _PageaddproductviewState extends State<Pageaddproductview> {
                 color: Colors.white
               ),
               child: IconButton(
-                onPressed: (){},
-                icon: Image.asset("lib/imgs/logo_upload_img.jpg"),
+                onPressed: () => _modelCamera.pick(ImageSource.camera),
+                icon: _imageFile != null ? Image.file(_imageFile!) : Image.asset("lib/imgs/logo_upload_img.jpg"),
+                //Image.file(_imageFile != null ?_imageFile.toString() : "lib/imgs/logo_upload_img.png")
               ),
             ),
 

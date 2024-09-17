@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_verificai/model/database.dart';
 
-
 class Pageproductview extends StatelessWidget {
 
   final String textProduct;

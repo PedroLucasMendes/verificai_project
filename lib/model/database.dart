@@ -8,7 +8,7 @@ class VerificaiDataBase {
 
   void createInitialData(){
     productList = [
-      ["lib/imgs/Logo_Instagram.png","banana", "13/04/2001", "baratao","31"],
+      ["lib/imgs/banana.jpeg","banana", "13/04/2001", "baratao","31"],
     ];
     _myBox.put("listProduct", productList);
   }
