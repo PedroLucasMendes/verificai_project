@@ -53,5 +53,20 @@
 	<string>Descreva por que sua aplicação precisa acessar a biblioteca de fotos</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Descreva por que sua aplicação precisa acessar a câmera</string>
+	<key>UIBackgroundModes</key>
+	<array>
+	<string>fetch</string>
+	<string>remote-notification</string>
+	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+	<key>NSAllowsArbitraryLoads</key>
+	<true/>
+	</dict>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need your location to show you relevant notifications.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need your location to show you relevant notifications.</string>
+
 </dict>
 </plist>

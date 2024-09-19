@@ -21,4 +21,8 @@ class VerificaiDataBase {
   void updateDataBase(){
     _myBox.put("listProduct", productList);
   }
+
+  void deleteDatabase(){
+    _myBox.delete("listProduct");
+  }
 }

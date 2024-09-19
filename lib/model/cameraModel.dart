@@ -11,22 +11,22 @@ class ModelCamera {
 
   ModelCamera({required this.onImagePicked});
 
-  // Função para salvar a imagem no diretório lib/imgs/fotos/
-  Future<String?> salveImage(String imagePath) async {
+  // Função para salvar a imagem no diretório apropriado do sistema
+  Future<String?> saveImage(String imagePath) async {
     try {
-      // Obtém o diretório do aplicativo
+      // Obtém o diretório de documentos do aplicativo
       final Directory appDir = await getApplicationDocumentsDirectory();
 
       // Cria o caminho completo para o diretório onde queremos salvar a imagem
-      final Directory saveDir = Directory('${appDir.path}/lib/imgs/fotos');
-      
+      final Directory saveDir = Directory('${appDir.path}/images');
+
       // Cria o diretório, caso não exista
       if (!await saveDir.exists()) {
         await saveDir.create(recursive: true);
       }
 
-      // Define o caminho completo da imagem
-      final String imageName = imagePath.split('/').last; // Obtém o nome da imagem
+      // Define o nome da imagem a partir do caminho original
+      final String imageName = imagePath.split('/').last; 
       final String savePath = '${saveDir.path}/$imageName';
 
       // Salva a imagem no diretório especificado
@@ -36,34 +36,34 @@ class ModelCamera {
       return savePath;
     } catch (e) {
       print('Erro ao salvar a imagem: $e');
-      return "erro:30"; // Você pode decidir como lidar com esse erro
+      return null;
     }
   }
 
-  // Função para pegar apenas o nome do arquivo
-  String getFileName(String filePath) {
-    return filePath.split('/').last;
-  }
+  // Função para selecionar uma imagem e salvar no diretório
+  Future<void> pickImage(ImageSource source) async {
+    try {
+      // Seleciona a imagem usando o ImagePicker
+      final pickedFile = await imagePicker.pickImage(source: source);
 
-  // Função para selecionar uma imagem e salvar no diretório lib/imgs/fotos/
-  pick(ImageSource source) async {
-    final pickedFile = await imagePicker.pickImage(source: source);
+      if (pickedFile != null) {
+        imageFile = File(pickedFile.path);
 
-    if (pickedFile != null) {
-      imageFile = File(pickedFile.path);
+        // Salva a imagem no diretório e obtém o caminho salvo
+        String? savedImagePath = await saveImage(imageFile!.path);
 
-      // Salva a imagem no diretório lib/imgs/fotos/ e obtém o caminho salvo
-      String? savedImagePath = await salveImage(imageFile!.path);
+        if (savedImagePath != null) {
+          // Atualiza a referência do File com o caminho salvo
+          imageFile = File(savedImagePath);
 
-      if (savedImagePath != null && savedImagePath != "erro:30") {
-        // Atualiza a referência do File com o caminho salvo
-        imageFile = File(savedImagePath);
-
-        // Chama a função passada pelo construtor com o arquivo salvo
-        onImagePicked(imageFile!);
-      } else {
-        print('Falha ao salvar a imagem.');
+          // Chama a função passada pelo construtor com o arquivo salvo
+          onImagePicked(imageFile!);
+        } else {
+          print('Falha ao salvar a imagem.');
+        }
       }
+    } catch (e) {
+      print('Erro ao selecionar a imagem: $e');
     }
   }
 }
